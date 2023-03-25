@@ -88,9 +88,9 @@ describe('DownBadBros.sol', () => {
         it('IERC721Metadata', async () => {
             expect(await contract.supportsInterface('0x5b5e139f')).to.equal(true);
         });
-        // it('IERC721Enumerable totalSupply, tokenOfOwnerByIndex', async () => {
-        //     expect(await contract.supportsInterface('0x780e9d63')).to.equal(true);
-        // });
+        it('IERC721Enumerable totalSupply, tokenOfOwnerByIndex', async () => {
+            expect(await contract.supportsInterface('0x780e9d63')).to.equal(true);
+        });
         // it('IERC2981 royalties', async () => {
         //     expect(await contract.supportsInterface('0x2a55205a')).to.equal(true);
     });
@@ -309,6 +309,17 @@ describe('DownBadBros.sol', () => {
             const tokenURI = await contract.tokenURI(50);
             console.log("Token URI 50: ", tokenURI)
             await expect(tokenURI).to.equal("ipfs://bafybeiflr4jbtqg77f2fhpvxearwau5x3dextrf6dy5i5vxnd363uncazu/50");
+        });
+
+
+        it(`Mint is Done: user should have 5 NFTs`, async () => {
+            const nftUserAddress = "0x2fb340bbde32ce2696e066b0089a99fe461d7368";
+            let usersNFTs = parseInt(await contract.balanceOf(nftUserAddress));
+            console.log("total NFT's ", usersNFTs);
+            for (let i = 0; i < usersNFTs; i++) {
+                console.log("NFT ID ", parseInt(await contract.tokenOfOwnerByIndex(nftUserAddress, i)));
+            }
+            await expect(usersNFTs).to.equal(5);
         });
 
         it(`Non Owner can't withdraw, reverted with "Not a contract owner"`, async () => {

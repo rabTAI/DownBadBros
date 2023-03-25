@@ -7,7 +7,7 @@ DownBadBros: Rugged, Scammed, Rekt, Sold the bottom. Can they make it all back?
 pragma solidity ^0.8.19;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
@@ -36,7 +36,7 @@ struct Epoch {
     bool revealed;
 }
 
-contract DownBadBros is ERC721, ReentrancyGuard {
+contract DownBadBros is ERC721Enumerable, ReentrancyGuard {
     using Strings for uint256;
     using Counters for Counters.Counter;
     Counters.Counter private supply;
@@ -88,10 +88,6 @@ contract DownBadBros is ERC721, ReentrancyGuard {
             "ERC721Metadata: URI query for nonexistent token"
         );
         return string(abi.encodePacked(_baseURI(), tokenId.toString()));
-    }
-
-    function totalSupply() public view returns (uint256) {
-        return supply.current();
     }
 
     //** Write Functions **
